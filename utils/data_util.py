@@ -101,7 +101,7 @@ class HackerNewsBigrams(Dataset):
 class HackerNewsContext(Dataset):
     """Hacker News dataset."""
 
-    def __init__(self, train=True, context_size=3):
+    def __init__(self, train=True, context_size=3, number_of_strings=1000):
         """
         Arguments:
             train (bool): true if in training mode, false if in evaluation mode
@@ -109,9 +109,10 @@ class HackerNewsContext(Dataset):
         """
         self.train = train
         self.context_size = context_size
+        self.number_of_strings = number_of_strings
         self.engine = create_engine(f'postgresql://{os.environ["DBUSER"]}:{os.environ["DBPW"]}@localhost:5432/hn')
         with self.engine.begin() as con:
-            self.df = pd.read_sql(sql='SELECT text FROM comments ORDER BY random() LIMIT 50000', con=con)
+            self.df = pd.read_sql(sql=f'SELECT text FROM comments ORDER BY random() LIMIT {self.number_of_strings}', con=con)
             
         self.contexts = []
         self.ys = []
