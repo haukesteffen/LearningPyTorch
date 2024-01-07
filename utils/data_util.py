@@ -62,7 +62,7 @@ class HackerNewsBigrams(Dataset):
         self.train = train
         self.engine = create_engine(f'postgresql://{os.environ["DBUSER"]}:{os.environ["DBPW"]}@localhost:5432/hn')
         with self.engine.begin() as con:
-            self.df = pd.read_sql(sql='SELECT text FROM comments ORDER BY random() LIMIT 100000', con=con)
+            self.df = pd.read_sql(sql='SELECT text FROM comments LIMIT 100000', con=con)
             
         self.Xch = []
         self.ych = []
@@ -112,7 +112,7 @@ class HackerNewsContext(Dataset):
         self.number_of_strings = number_of_strings
         self.engine = create_engine(f'postgresql://{os.environ["DBUSER"]}:{os.environ["DBPW"]}@localhost:5432/hn')
         with self.engine.begin() as con:
-            self.df = pd.read_sql(sql=f'SELECT text FROM comments ORDER BY random() LIMIT {self.number_of_strings}', con=con)
+            self.df = pd.read_sql(sql=f'SELECT text FROM comments LIMIT {self.number_of_strings}', con=con)
             
         self.contexts = []
         self.ys = []
