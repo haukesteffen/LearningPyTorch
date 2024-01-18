@@ -80,16 +80,17 @@ class HackerNewsContext(Dataset):
                 for c in l:
                     if (((c.isalpha()) & (c.isascii())) | (c == '<>') | (c == ' ')):
                         self.contexts.append(context)
-                        self.ys.append(c)
+                        self.ys.append(context[1:] + [c])
                         context = context[1:] + [c]
 
-        self.chars = set(self.ys)
+        self.chars = set([c for y in self.ys for c in y])
         self.ctoi = {c:i for i, c in enumerate(sorted(self.chars))}
         self.itoc = {i:c for c, i in self.ctoi.items()}
 
         self.X_indexes = torch.tensor([[self.ctoi[char] for char in context] for context in self.contexts])
         self.X = F.one_hot(self.X_indexes, num_classes=28).float()
-        self.y = torch.tensor([self.ctoi[y] for y in self.ys])
+        self.y_indexes = torch.tensor([[self.ctoi[char] for char in chars] for chars in self.ys])
+        self.y = F.one_hot(self.y_indexes, num_classes=28).float()
 
         self.Xtr, self.Xte, self.ytr, self.yte = train_test_split(self.X, self.y, test_size=0.1, random_state=42)
 
