@@ -8,3 +8,5 @@ This repository is inspired by and loosely based on Karpathy's [makemore](https:
 4. [Recurrent neural network](https://github.com/haukesteffen/LearningPyTorch/blob/main/4-rnn.ipynb). Using a recurrent neural network to further lower negative log likelihood.
 5. LSTM/GLU. to-do
 6. Transformer. to-do
+
+Currently can't get the low-level PyTorch implementation of RNNs to work. The problem seems to be a lack of parallelization, so training takes forever. However, I am currently having problems wrapping my head around the parallelization, especially since the batch dimension is of different size for every input sequence. Any advice is appreciated!
